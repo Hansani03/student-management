@@ -9,7 +9,7 @@ import com.example.student.entity.Student;
 import com.example.student.service.StudentService;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/student-api")
 public class StudentController {
 
     @Autowired
