@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: student-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: student_management
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  student-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: student-api
+    container_name: student-api
+    ports:
+      - "8888:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
